@@ -14,10 +14,19 @@
             padding: 0 15px;
         }
 
+        .main {
+            background: linear-gradient(to right, blue, green, red);
+            width: 90%;
+            height: 80vh;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+        }
+
         .side_bar {
             flex: 0 0 20%;
             max-width: 80%;
-            background-color: #f8f9fa;
+            background-color: white;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -51,12 +60,8 @@
             <a class="btn btn-primary sm" href="{% url 'monthly_sales' %}">Monthly Sales</a>
             <a class="btn btn-primary sm" href="{% url 'daily_sales' %}">Daily Sales</a>
         </div>
-        <div class="col-md-6 offset-md-4 mt-4 main">
-            {% if search_date %}
-            <h2>Results for {{ search_date }}</h2>
-            <p>Daily Sales: {{ daily_sales }}</p>
-            <p>Monthly Sales: {{ monthly_sales }}</p>
-            {% endif %}
+        <div class="col-md-10 offset-md-1 main">
+
         </div>
     </div>
 

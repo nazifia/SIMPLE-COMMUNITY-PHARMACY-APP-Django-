@@ -39,7 +39,7 @@ def logout_user(request):
     return redirect('index')
 
 
-
+@login_required
 def home(request):
     return render(request, 'app/home.html', {})
 
