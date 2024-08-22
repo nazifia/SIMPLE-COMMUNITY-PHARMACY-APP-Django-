@@ -93,7 +93,7 @@ def edit_item(request, pk):
     else:
         return render(request, 'app/index.html')
     
-    
+@login_required
 def search_item(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -108,7 +108,7 @@ def search_item(request):
             results = None
     return render(request, 'app/search_item.html', {'form': form, 'results': results})
 
-
+@login_required
 @transaction.atomic
 def add_to_cart(request, pk):
     if request.user.is_authenticated:
@@ -152,7 +152,7 @@ def add_to_cart(request, pk):
 
 
 
-
+@login_required
 def view_cart(request):
     cart_items = CartItem.objects.all()
     
@@ -172,6 +172,7 @@ def view_cart(request):
         'total_discounted_price': total_discounted_price,
         })
 
+@login_required
 def update_cart_item_quantity(request, pk):
     cart_item = get_object_or_404(CartItem, id=pk)
     item = cart_item.item
@@ -207,7 +208,7 @@ def update_cart_item_quantity(request, pk):
 
     return render(request, 'app/view_cart.html', {'cart_item': cart_item})
 
-
+@login_required
 def discount(request, pk):
     cart_items = CartItem.objects.filter(id=pk)  
     total_price = sum(item.item.selling_price * item.quantity for item in cart_items)
@@ -236,7 +237,7 @@ def discount(request, pk):
 def error_page(request):
     return render(request, 'app/error_page.html')
 
-
+@login_required
 def clear_cart(request):
     if request.method == "POST":
         cart_items = CartItem.objects.filter()
@@ -249,6 +250,7 @@ def clear_cart(request):
         return redirect('view_cart')
     
 
+@login_required
 def receipt(request):
     if request.user.is_authenticated:
         cart_items = CartItem.objects.all()
@@ -302,6 +304,7 @@ def receipt(request):
 
 
 @user_passes_test(is_admin)
+@login_required
 def dispensing_log(request):
     logs = DispensingLog.objects.all().order_by('-created_at')
     
@@ -312,6 +315,8 @@ def dispensing_log(request):
             logs = logs.filter(created_at__date=selected_date)
     
     return render(request, 'app/dispensing-log.html', {'logs': logs})
+
+
 def get_daily_sales():
     daily_sales = Sales.objects.annotate(
         day=TruncDay('date')
@@ -339,7 +344,7 @@ def monthly_sales(request):
     return render(request, 'app/monthly_sales.html', {'monthly_sales': monthly_sales})
 
 
-
+@login_required
 def search_sales(request):
     if request.method == 'POST':
         form = salesForm(request.POST)
@@ -358,6 +363,7 @@ def search_sales(request):
     return render(request, 'app/search_sales.html', {'form': form})
 
 
+@login_required
 def exp_date_alert(request):
     if request.user.is_authenticated:
         # Define the alert threshold (e.g., 90 days before expiration)
@@ -391,6 +397,7 @@ def exp_date_alert(request):
 
     
 @user_passes_test(is_admin)
+@login_required
 def add_new_user(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -413,7 +420,7 @@ def add_new_user(request):
 
 
 
-
+@login_required
 def add_customer(request):
     if request.method == 'POST':
         form = CustomerForm(request.POST)
@@ -427,7 +434,7 @@ def add_customer(request):
 
 
 
-
+@login_required
 def customer_list(request):
     customers = Customers.objects.all()
     return render(request, 'app/customer_list.html', {'customers': customers})
@@ -446,7 +453,7 @@ def delete_customer(request, pk):
 
 
 
-
+@login_required
 @user_passes_test(is_admin)
 def register(request):
     if request.method == 'POST':
