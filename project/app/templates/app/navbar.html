@@ -1,0 +1,74 @@
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Naz_Tech</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if user.is_authenticated %}
+                <div class="btn-group dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Management
+                    </button>
+                    <ul class="dropdown-menu" style="text-align: center;">
+                        <li><a class="dropdown-item" style="text-decoration: none; color:blue;"
+                                href="{% url 'customer_list' %}">Manage Customers</a>
+
+                        </li>
+                        <li><a class="dropdown-item" style="text-decoration: none; color:blue;"
+                                href="{% url 'add_new_user' %}">Add new
+                                User</a>
+
+                        </li>
+                        <li><a class="dropdown-item" style="text-decoration: none; color:blue;"
+                                href="{% url 'dispensing-log' %}">Dispensed Items</a>
+
+                        </li>
+                        <li><a href="{% url 'search_sales' %}" data-toggle="modal" data-target="#itemModal"
+                                style="text-decoration: none; color: blue">
+                                Reports
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <li class="nav-item ">
+                    <a class="nav-link active" href="{% url 'store' %}">Store</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'search_item' %}">Dispense</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'exp_date_alert' %}">Expiry Alert</a>
+                </li>
+            </ul>
+            <div class="btn-group dropdown">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    {{ user.username|title }}
+                </button>
+                <ul class="dropdown-menu" style="text-align: center;">
+                    <li><a class="dropdown-item" style="text-decoration: none; color:black;"
+                            href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-item ">
+                <button class="btn btn-primary " role="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                <ul class="dropdown-menu">
+                </ul>
+            </div>
+
+            {% else %}
+            <div class="nav-item">
+                <a class="nav-link active text-white" href="{% url 'index' %}">Login</a>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</nav>

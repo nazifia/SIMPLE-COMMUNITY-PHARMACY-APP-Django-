@@ -1,0 +1,66 @@
+{% extends 'app/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Sales</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 4fr;
+            margin: 20px auto;
+            max-width: 1200px;
+            padding: 0 15px;
+        }
+
+        .side_bar {
+            flex: 0 0 20%;
+            max-width: 80%;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 20px;
+        }
+
+        .side_bar button,
+        .side_bar a {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 7px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="side_bar">
+            <a class="btn btn-primary sm" href="{% url 'monthly_sales' %}">Monthly Sales</a>
+            <a class="btn btn-primary sm" href="{% url 'daily_sales' %}">Daily Sales</a>
+        </div>
+        <div class="col-md-6 offset-md-4 mt-4 main">
+            {% if search_date %}
+            <h2>Results for {{ search_date }}</h2>
+            <p>Daily Sales: {{ daily_sales }}</p>
+            <p>Monthly Sales: {{ monthly_sales }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+
+</html>
+{% endblock %}

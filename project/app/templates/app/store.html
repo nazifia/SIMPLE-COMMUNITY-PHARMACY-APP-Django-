@@ -1,0 +1,122 @@
+{% extends 'app/base.html' %}
+{% block content %}
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px auto;
+        max-width: 1200px;
+        padding: 0 15px;
+    }
+
+    .side_box {
+        flex: 0 0 25%;
+        max-width: 30%;
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 20px;
+    }
+
+    .side_box h5 {
+        margin-bottom: 20px;
+    }
+
+    .side_box button,
+    .side_box a {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+    }
+</style>
+<br>
+<div class="container">
+    <div class="side_box sticky">
+        {% if user.is_superuser %}
+        <h5>Stock Value: ₦{{ total_stock_value }} </h5>
+        <hr>
+        {% endif %}
+        <button data-bs-toggle="modal" data-bs-target="#addItemModal">Add New Item To Store</button>
+        <a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
+    </div>
+    <div class="col-md-8 offset-md-3">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success" style="text-align: center;" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h2 class="col-md-8 offset-md-5" style="text-shadow: 2px 2px 2px rgba(0, 0, 0, .2);">ITEMS IN STOCK</h2>
+        <table class="table table-hover table-bordered table-striped"
+            style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);">
+            <thead class="table-primary ">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">ITEM NAME</th>
+                    <th scope="col">COST/P</th>
+                    <th scope="col">SELLING/P</th>
+                    <th scope="col">STOCK/QTY</th>
+                    <th scope="col">EXP DATE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in store_items %}
+                <tr>
+                    <td><a href="{% url 'edit_item' item.id %}">{{item.id}}</a></td>
+                    <td>{{item.name|title}}</td>
+                    <td>{{item.purchase_price}}</td>
+                    <td>{{item.selling_price}}</td>
+                    <td>{{item.stock_quantity}}</td>
+                    <td>{{item.expiry_date}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addItemModalLabel">ADD NEW ITEM</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'add_item' %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="name" placeholder="ITEM NAME" class="form-control">
+                    <input type="number" name="purchase_price" placeholder="PURCHASE PRICE" class="form-control mt-3">
+                    <input type="number" name="selling_price" placeholder="SELLING PRICE" class="form-control mt-3">
+                    <input type="number" name="stock_quantity" placeholder="QUANTITY" class="form-control mt-3">
+                    <input type="date" name="expiry_date" placeholder="EXP DATE" class="form-control mt-3">
+                    <button type="submit" class="btn btn-success form-control mt-3">ADD ITEM</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function closeAddItem() {
+        var myModalEl = document.getElementById('addItemModal');
+        var modal = bootstrap.Modal.getInstance(myModalEl);
+        modal.hide();
+    }
+</script>
+{% endblock %}

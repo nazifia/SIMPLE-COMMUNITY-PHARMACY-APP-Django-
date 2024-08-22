@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+{% extends 'app/base.html' %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Items</title>
+</head>
+
+<body>
+    {% block content %}
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 6fr;
+            margin: 20px auto;
+            max-width: 90%;
+            padding: 0 15px;
+        }
+
+        .side_nav {
+            flex: 0 0 20%;
+            max-width: 100%;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 50px;
+            height: 100vh;
+        }
+
+        .side_nav:hover {
+            flex: 0 0 25%;
+            width: 105%;
+            background-color: white;
+            padding: 9px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 198px;
+            height: 100vh;
+        }
+
+        .side_nav button,
+        .side_nav a {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 7px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #main {
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to bottom, rgb(224, 255, 255), rgb(55, 139, 164));
+            height: 80vh;
+            padding-left: 40px;
+            padding-right: 40px;
+            height: 100vh;
+        }
+
+        .main {
+            max-width: 70%;
+            height: 80%;
+            margin: auto;
+            padding-top: 10%;
+            padding-left: 15%;
+        }
+
+        .main button,
+        .main a {
+            display: block;
+            width: 120%;
+            margin-bottom: 10px;
+            padding: 7px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .item-container {
+            margin-bottom: 15px;
+        }
+
+        .item-container input {
+            width: 10%;
+        }
+
+        .search-container input {
+            width: 70%;
+        }
+    </style>
+
+    <div class="container">
+        <div class="side_nav">
+            <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+            <a href="{% url 'customer_list' %}">Customers</a>
+        </div>
+
+        <div class="col-md-10 offset-md-1" id="main">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger" style="text-align: center;" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            <h2 class="col-md-8 offset-md-3">Purchase Items</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <label for="customer">Select Customer:</label>
+                <select name="customer_id" id="customer">
+                    {% for customer in customers %}
+                    <option value="{{ customer.id }}">{{ customer.name }}</option>
+                    {% endfor %}
+                </select>
+                <hr>
+                <div class="search-container">
+                    <input type="text" id="searchInput" onkeyup="searchItems()" placeholder="Search for items...">
+                </div>
+
+                <h3>Select Items:</h3>
+                <div id="itemsContainer">
+                    {% for item in items %}
+                    <div class="item-container">
+                        <input type="checkbox" name="item_ids" value="{{ item.id }}">
+                        <label>{{ item.name|title }} -Price ₦{{ item.selling_price }} -(Available stock
+                            {{item.stock_quantity}})</label>
+                        <input type="number" name="quantity_{{ item.id }}" min="1" value="1">
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="col-md-6 offset-md-0 mt-4">
+                    <button class="btn btn-warning form-control btn-sm" type="submit">Purchase</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function searchItems() {
+            let input = document.getElementById('searchInput');
+            let filter = input.value.toLowerCase();
+            let itemsContainer = document.getElementById('itemsContainer');
+            let items = itemsContainer.getElementsByClassName('item-container');
+
+            for (let i = 0; i < items.length; i++) {
+                let label = items[i].getElementsByTagName("label")[0];
+                let txtValue = label.textContent || label.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    items[i].style.display = "";
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+
+    {% endblock %}
+</body>
+
+</html>

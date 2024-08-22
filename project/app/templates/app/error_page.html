@@ -1,0 +1,9 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<br> <br>
+<div class="col-md-6 offset-md-3">
+    <h1>SORRY, THERE WAS AN ERROR</h1>
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn form-control btn-secondary" style="width: 90%;">Go Back</a>
+</div>
+{% endblock %}

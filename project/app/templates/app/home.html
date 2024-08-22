@@ -1,0 +1,28 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    h1 {
+        text-shadow: 2px 2px 4px rgba(7, 240, 131, 0.927);
+        color: white;
+        font-weight: bolder
+    }
+
+    h3 {
+        text-shadow: 2px 2px 4px rgba(255, 140, 0, 0.75);
+        color: white;
+        font-weight: bolder;
+        margin-top: 2em;
+    }
+</style>
+
+<div
+    style="background-image: url({% static 'app/images/pharmacy2.jpg' %}); height: 100vh; background-size: cover; background-position: center;">
+    <br> <br>
+    <h1 class="col-md-6 offset-md-3">WELCOME TO NAZZ PHARMACY</h1>
+    <h3 class="col-md-6 offset-md-4">YOUR HEALTH, OUR PRIORITY.</h3>
+</div>
+
+
+
+{% endblock %}

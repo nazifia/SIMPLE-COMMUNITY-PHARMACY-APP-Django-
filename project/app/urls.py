@@ -1,0 +1,35 @@
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('home/', views.home, name='home'),
+    path('store/', views.store, name='store'),
+    path('add_item/', views.add_item, name='add_item'),
+    path('search_item/', views.search_item, name='search_item'),
+    path('edit_item/<int:pk>', views.edit_item, name='edit_item'),
+    path('add_to_cart/<int:pk>', views.add_to_cart, name='add_to_cart'),
+    path('view_cart/', views.view_cart, name='view_cart'),
+    path('update_cart_item_quantity/<int:pk>/', views.update_cart_item_quantity, name='update_cart_item_quantity'),
+    path('error_page/', views.error_page, name='error_page'),
+    path('discount/<int:pk>', views.discount, name='discount'),
+    path('clear_cart/', views.clear_cart, name='clear_cart'),
+    path('receipt/', views.receipt, name='receipt'),
+    path('logout/', views.logout_user, name='logout'),
+    path('dispensing-log/', views.dispensing_log, name='dispensing-log'),
+    path('search_sales/', views.search_sales, name='search_sales'),
+    path('monthly_sales/', views.monthly_sales, name='monthly_sales'),
+    path('daily_sales/', views.daily_sales, name='daily_sales'),
+    path('exp_date_alert/', views.exp_date_alert, name='exp_date_alert'),
+    path('add_new_user/', views.add_new_user, name='add_new_user'),
+    path('add_customer/', views.add_customer, name='add_customer'),
+    path('delete_customer/<int:pk>/', views.delete_customer, name='delete_customer'),
+    path('customer_list/', views.customer_list, name='customer_list'),
+    path('wallet/<int:customer_id>/', views.wallet_details, name='wallet_details'),
+    path('wallet/add-funds/<int:customer_id>/', views.add_funds, name='add_funds'),
+    path('clear_balance/<int:customer_id>/', views.clear_balance, name='clear_balance'),
+    path('purchase_items/', views.purchase_items, name='purchase_items'),
+    path('customers_on_credit/', views.customers_on_credit, name='customers_on_credit'),
+    path('wallet/<int:customer_id>/add_funds/', views.add_funds, name='add_fund'),
+]

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Cart</title>
+    <!-- Include Bootstrap CSS for modals -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    {% extends 'app/base.html' %}
+    {% block content %}
+
+    {% if cart_items %}
+    <br>
+    <div class="col-md-10 offset-md-1">
+        <div class="col-md-6 offset-md-5">
+            <h4>CART ITEMS</h4>
+        </div>
+
+        <table class="table table-hover table-bordered">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">SN</th>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Discount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cart_item in cart_items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ cart_item.item.name|title }}</td>
+                    <td>{{ cart_item.quantity }}</td>
+                    <td>{{ cart_item.item.selling_price }}</td>
+                    <td>{{ cart_item.subtotal }}</td>
+
+                    <td>
+                        <form method="POST" action="{% url 'update_cart_item_quantity' cart_item.id %}">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" min="1" id="quantity-{{ cart_item.id }}"
+                                style="width: 80px;">
+                            <button class="btn btn-warning btn-sm" type="submit">Subtract Quantity</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="{% url 'discount' cart_item.id %}">
+                            {% csrf_token %}
+                            <input type="number" name="discount_amount-{{ cart_item.id }}" min="0"
+                                id="discount_amount-{{ cart_item.id }}" style="width: 80px;">
+                            <button class="btn btn-info btn-sm" type="submit">Apply Discount</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h5>Total Price: ₦{{ total_price }}</h5>
+        <h4>Total Price after Discount: ₦{{ total_discounted_price }}</h4>
+
+        <div class="d-grid gap-2 d-md-block">
+            <form method="POST" action="{% url 'clear_cart' %}" class="d-inline">
+                {% csrf_token %}
+                <button class="btn btn-dark" type="submit">Clear Cart</button>
+            </form>
+            <a href="{% url 'receipt' %}" class="btn btn-success">Generate Receipt</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-md-8 offset-md-4 mt-4">
+        <h4>YOUR CART IS EMPTY</h4>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}} col-md-10 offset-md-0" style="width: 40%;">{{message}}</div>
+        {% endfor %}
+        {% endif %}
+        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary form-control" style="width: 30%;">Go Back</a>
+    </div>
+    {% endif %}
+
+
+    {% endblock %}
+</body>
+
+</html>

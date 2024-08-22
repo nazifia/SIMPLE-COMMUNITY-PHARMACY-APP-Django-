@@ -1,0 +1,96 @@
+<!-- templates/app/exp_date_alert.html -->
+
+{% extends "app/base.html" %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% block content %}
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 30px;
+            max-width: 1500px;
+            margin: 50px auto;
+            border: 1px solid;
+            height: 70vh;
+            background-color: rgb(227, 227, 227);
+        }
+
+        .near_exp {
+            max-width: 90%;
+            margin-left: 50px;
+        }
+
+        .expired {
+            max-width: 90%;
+        }
+    </style>
+    <div class="container">
+        <div class="near_exp">
+            <h2 class="col-md-10 offset-md-1">Item(s) Nearing Expiration</h2>
+            {% if expiring_items %}
+            <table class="table table-bordered table-hover" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+                <thead class="table-success">
+                    <tr>
+                        <th>SN</th>
+                        <th>ITEM NAME</th>
+                        <th>EXP DATE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in expiring_items %}
+                    <tr>
+                        <td>{{ forloop.counter}}</td>
+                        <td>{{ item.name|title }}</td>
+                        <td style="color: rgb(255, 6, 230);">{{ item.expiry_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="col-md-10 offset-md-1">No items are nearing expiration within the next 90 days.</p>
+            {% endif %}
+        </div>
+
+
+        <div class="expired">
+            <h2 class="col-md-8 offset-md-2">Expired Item(s)</h2>
+            {% if expired_items %}
+            <table class="table table-bordered table-hover" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+                <thead class="table-danger">
+                    <tr>
+                        <th>SN</th>
+                        <th>ITEM NAME</th>
+                        <th>EXP DATE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in expired_items %}
+                    <tr>
+                        <td>{{ forloop.counter}}</td>
+                        <td>{{ item.name|title }}</td>
+                        <td style="color: rgb(250, 13, 5);">{{ item.expiry_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="col-md-8 offset-md-2">No items have expired.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>

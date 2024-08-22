@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Item</title>
+</head>
+
+<body>
+    {% extends 'app/base.html' %}
+    {% block content %}
+
+    <style>
+        #body {
+            background: linear-gradient(to bottom, rgb(246, 131, 131), rgb(103, 250, 103));
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin: 30px auto;
+            width: 70vw;
+            height: 80vh;
+        }
+    </style>
+    <div id="body">
+        <div class="col-md-6 offset-md-3">
+            <h2 class="col-md-8 offset-md-2" style="color: blue;">Edit This Item</h2>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn form-control col-md-10 btn-primary offset-md-0">UPDATE</button>
+            </form>
+            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary form-control mt-3">Go Back</a>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <script>
+        function closeEditItem() {
+            window.close();
+        }
+    </script>
+</body>
+
+</html>
+{% endblock %}

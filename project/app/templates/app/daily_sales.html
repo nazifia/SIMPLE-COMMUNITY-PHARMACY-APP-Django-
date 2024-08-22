@@ -1,0 +1,123 @@
+{% extends 'app/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Sales</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 4fr;
+            margin: 20px auto;
+            max-width: 1200px;
+            padding: 0 15px;
+        }
+
+        .side_bar {
+            flex: 0 0 20%;
+            max-width: 80%;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 20px;
+        }
+
+        .side_bar button,
+        .side_bar a {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 7px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="side_bar">
+            <a class="btn btn-primary sm" href="{% url 'monthly_sales' %}">Monthly Sales</a>
+            <a class="btn btn-primary sm" href="{% url 'daily_sales' %}">Daily Sales</a>
+        </div>
+        <div class="col-md-6 offset-md-2">
+            {% if daily_sales %}
+            <h1 class="col-md-8 offset-md-3">Daily Sales</h1>
+            <table class="table table-striped table-hover table-bordered"
+                style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">DAY</th>
+                        <th scope="col">AMOUNT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in daily_sales %}
+                    <tr>
+                        <td>{{ sale.day }}</td>
+                        <td>{{ sale.total_sales }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="chart-container">
+                <canvas id="dailySalesChart"></canvas>
+            </div>
+
+            <script>
+                var ctx = document.getElementById('dailySalesChart').getContext('2d');
+                var dailySalesChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [{% for sale in daily_sales %}'{{ sale.day }}',{% endfor %}],
+                datasets: [{
+                    label: 'Total Sales',
+                    data: [{% for sale in daily_sales %}{{ sale.total_sales }}, {% endfor %}],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                options: {
+                    responsive: true,
+                        scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+                });
+            </script>
+
+            {% else %}
+            <h4>NO SALES FOR THE DAY</h4>
+
+            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary form-control" style="width: 100%;">Go
+                Back</a>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+
+</html>
+{% endblock %}

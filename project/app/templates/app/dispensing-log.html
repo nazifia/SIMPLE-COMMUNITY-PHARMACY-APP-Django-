@@ -1,0 +1,48 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+{% if logs %}
+
+<div class="col-md-8 offset-md-2" id="main">
+
+    <h1 class="col-md-8 offset-md-4">Dispensing Logs</h1>
+
+    <div class="col-md-6 offset-md-3 mb-3">
+        <!-- Add the date picker -->
+        <form method="GET" action="">
+            <input type="date" name="date" id="searchDate" class="form-control"
+                value="{{ request.GET.date|default:'' }}">
+            <button type="submit" class="btn btn-primary mt-2">Search by Date</button>
+        </form>
+    </div>
+
+    <table class="table table-striped table-hover table-bordered" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Item Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Timestamp</th>
+            </tr>
+        </thead>
+        <tbody id="logsTable">
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.user|title }}</td>
+                <td>{{ log.name|title }}</td>
+                <td>{{ log.quantity }}</td>
+                <td>{{ log.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% else %}
+<div class="col-md-8 offset-md-4 mt-5">
+    <h3>YOU HAVE EMPTY LOG</h3>
+    <a class="btn btn-secondary" style="width: 35%;" href="{{ request.META.HTTP_REFERER }}">Go Back</a>
+</div>
+{% endif %}
+{% endblock %}

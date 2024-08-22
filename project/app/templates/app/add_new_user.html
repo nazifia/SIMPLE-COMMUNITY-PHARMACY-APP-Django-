@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% extends 'app/base.html' %}
+<br>
+<br>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New User</title>
+
+</head>
+
+<body>
+    {% block content %}
+    <br>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        fieldset {
+            display: block;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ccc;
+            padding: 10px;
+            height: 450px;
+            width: 650px;
+            border-radius: 20px;
+            background-color: rgb(135, 183, 251);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+
+        fieldset button {
+            display: block;
+            margin: 15px 63px;
+            width: 80%;
+            border: none;
+            background-color: rgb(2, 185, 2);
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        fieldset button:hover {
+            background-color: rgb(65, 64, 64);
+        }
+
+        fieldset input {
+            display: block;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            padding-left: 30px;
+            margin: auto;
+            letter-spacing: 2px;
+        }
+
+        fieldset label {
+            letter-spacing: 2px;
+            margin-left: 65px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        legend {
+            font-weight: bold;
+            padding: 0 10px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+    {% for message in messages %}
+    <h5 style="color: red;">{{ message }}</h5>
+    {% endfor %}
+    <div class="container">
+
+        <form action="" method="post">
+            <fieldset>
+                <legend>REGISTER NEW USER</legend>
+                {% csrf_token %}
+                <label for="username">Username</label>
+                <input type="text" name="username" placeholder="Username" required>
+                <label for="email">Email Address</label>
+                <input type="email" name="email" placeholder="Email Address">
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="Password" required>
+                <label for="password2">Confirm Password</label>
+                <input type="password" name="password2" placeholder="Confirm Password" required>
+                <button>REGISTER</button>
+            </fieldset>
+        </form>
+    </div>
+    {% endblock %}
+</body>
+
+</html>
